@@ -432,9 +432,11 @@
             display: block;
         }
 
-        .evolution-chart {
-            height: 300px;
-            margin-top: 20px;
+        /* Ajuste para la altura de los gráficos en general, para hacerlos más compactos */
+        .chart-canvas { /* Nueva clase para los canvas */
+            max-height: 250px; /* Altura máxima para los gráficos */
+            width: 100% !important; /* Asegurar que ocupen todo el ancho disponible */
+            height: auto !important; /* Mantener la proporción */
         }
     </style>
 </head>
@@ -450,7 +452,6 @@
     </div>
 
     <div class="container">
-        <!-- ========== SECCIÓN HOME ========== -->
         <div id="home" class="section active">
             <header>
                 <h1>Dashboard de Seguridad Colombia</h1>
@@ -517,7 +518,6 @@
             </div>
         </div>
 
-        <!-- ========== SECCIÓN EVOLUCIÓN TEMPORAL ========== -->
         <div id="temporal" class="section">
             <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
             
@@ -526,7 +526,6 @@
                 <p class="subtitle">Análisis de tendencias por género 2020-2025</p>
             </header>
 
-            <!-- Cifras Totales -->
             <div class="content-grid">
                 <div class="metric-card female">
                     <div class="metric-value">2.037.504</div>
@@ -542,27 +541,24 @@
                 </div>
             </div>
 
-            <!-- Gráfico de Evolución -->
             <div class="chart-container">
                 <h3 style="color: #2d5016; margin-bottom: 20px; text-align: center;">Evolución Anual por Género</h3>
-                <canvas id="evolutionChart" width="400" height="200"></canvas>
+                <canvas id="evolutionChart" class="chart-canvas"></canvas>
             </div>
 
-            <!-- Insights -->
             <div class="insights">
                 <h3>🎯 Insights Clave para Política Pública</h3>
                 <ul>
-                    <li><span class="highlight">Crisis 2020-2022:</span> Las mujeres experimentaron un crecimiento alarmante del 131% en victimización (199.346 a 460.033 víctimas)</li>
-                    <li><span class="highlight">Pico histórico:</span> 2022 marcó el punto más alto con 460.033 casos femeninos y 1.14M total</li>
-                    <li><span class="highlight">Tendencia actual:</span> Disminución gradual desde 2023, pero los números siguen siendo altos (400k+ anuales)</li>
-                    <li><span class="highlight">Brecha de género:</span> Por cada 100 mujeres victimizadas hay 113 hombres (53% vs 47%)</li>
-                    <li><span class="highlight">Concentración femenina:</span> Las mujeres representan el 47% del total de víctimas con datos de género</li>
-                    <li><span class="highlight">Recuperación más lenta:</span> Las mujeres muestran una reducción más lenta comparada con la tendencia general</li>
+                    <li><span class="highlight">Crisis 2020-2022:</span> Las mujeres experimentaron un crecimiento alarmante del 131% en victimización (199.346 a 460.033 víctimas).</li>
+                    <li><span class="highlight">Pico histórico:</span> 2022 marcó el punto más alto con 460.033 casos femeninos y 1.14M total.</li>
+                    <li><span class="highlight">Tendencia actual:</span> Disminución gradual desde 2023, pero los números siguen siendo altos (400k+ anuales).</li>
+                    <li><span class="highlight">Brecha de género:</span> Por cada 100 mujeres victimizadas hay 113 hombres (53% vs 47%).</li>
+                    <li><span class="highlight">Concentración femenina:</span> Las mujeres representan el 47% del total de víctimas con datos de género.</li>
+                    <li><span class="highlight">Recuperación más lenta:</span> Las mujeres muestran una reducción más lenta comparada con la tendencia general.</li>
                 </ul>
             </div>
         </div>
 
-        <!-- ========== SECCIÓN TERRITORIAL ========== -->
         <div id="territorial" class="section">
             <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
             
@@ -571,7 +567,6 @@
                 <p class="subtitle">Distribución por departamento y género 2020-2025</p>
             </header>
 
-            <!-- Cifras Totales Nacionales -->
             <div class="content-grid">
                 <div class="metric-card female">
                     <div class="metric-value">2.037.504</div>
@@ -587,48 +582,46 @@
                 </div>
             </div>
 
-            <!-- Filtro por Departamento -->
             <div class="filter-container">
                 <label for="deptSelect" style="color: #2d5016; font-weight: bold; margin-right: 15px;">Seleccionar Departamento:</label>
                 <select id="deptSelect" class="filter-select" onchange="showDepartmentData()">
                     <option value="">-- Seleccione un departamento --</option>
-                    <option value="bogota">Bogotá D.C.</option>
-                    <option value="valle">Valle del Cauca</option>
-                    <option value="antioquia">Antioquia</option>
-                    <option value="cundinamarca">Cundinamarca</option>
-                    <option value="atlantico">Atlántico</option>
-                    <option value="santander">Santander</option>
-                    <option value="cauca">Cauca</option>
-                    <option value="tolima">Tolima</option>
-                    <option value="huila">Huila</option>
-                    <option value="bolivar">Bolívar</option>
-                    <option value="norte_santander">Norte de Santander</option>
-                    <option value="narino">Nariño</option>
-                    <option value="meta">Meta</option>
-                    <option value="boyaca">Boyacá</option>
-                    <option value="risaralda">Risaralda</option>
-                    <option value="cesar">Cesar</option>
-                    <option value="magdalena">Magdalena</option>
-                    <option value="cordoba">Córdoba</option>
-                    <option value="caldas">Caldas</option>
-                    <option value="quindio">Quindío</option>
-                    <option value="casanare">Casanare</option>
-                    <option value="sucre">Sucre</option>
-                    <option value="guajira">La Guajira</option>
-                    <option value="caqueta">Caquetá</option>
-                    <option value="choco">Chocó</option>
-                    <option value="arauca">Arauca</option>
-                    <option value="putumayo">Putumayo</option>
-                    <option value="guaviare">Guaviare</option>
-                    <option value="san_andres">San Andrés</option>
                     <option value="amazonas">Amazonas</option>
-                    <option value="vichada">Vichada</option>
+                    <option value="antioquia">Antioquia</option>
+                    <option value="arauca">Arauca</option>
+                    <option value="atlantico">Atlántico</option>
+                    <option value="bogota">Bogotá D.C.</option>
+                    <option value="bolivar">Bolívar</option>
+                    <option value="boyaca">Boyacá</option>
+                    <option value="caldas">Caldas</option>
+                    <option value="caqueta">Caquetá</option>
+                    <option value="casanare">Casanare</option>
+                    <option value="cauca">Cauca</option>
+                    <option value="cesar">Cesar</option>
+                    <option value="choco">Chocó</option>
+                    <option value="cordoba">Córdoba</option>
+                    <option value="cundinamarca">Cundinamarca</option>
                     <option value="guainia">Guainía</option>
+                    <option value="guaviare">Guaviare</option>
+                    <option value="huila">Huila</option>
+                    <option value="la_guajira">La Guajira</option>
+                    <option value="magdalena">Magdalena</option>
+                    <option value="meta">Meta</option>
+                    <option value="narino">Nariño</option>
+                    <option value="norte_santander">Norte de Santander</option>
+                    <option value="putumayo">Putumayo</option>
+                    <option value="quindio">Quindío</option>
+                    <option value="risaralda">Risaralda</option>
+                    <option value="san_andres">San Andrés</option>
+                    <option value="santander">Santander</option>
+                    <option value="sucre">Sucre</option>
+                    <option value="tolima">Tolima</option>
+                    <option value="valle_del_cauca">Valle del Cauca</option>
                     <option value="vaupes">Vaupés</option>
+                    <option value="vichada">Vichada</option>
                 </select>
             </div>
 
-            <!-- Resultados por Departamento -->
             <div id="deptResults" class="dept-results">
                 <div class="content-grid">
                     <div class="metric-card female">
@@ -648,23 +641,26 @@
                         <div class="metric-label">📈 % Mujeres</div>
                     </div>
                 </div>
+
+                <div class="chart-container">
+                    <h3 style="color: #2d5016; margin-bottom: 20px; text-align: center;" id="departmentChartTitle">Evolución Temporal del Departamento</h3>
+                    <canvas id="departmentChart" class="chart-canvas"></canvas>
+                </div>
             </div>
 
-            <!-- Insights Territoriales -->
             <div class="insights">
                 <h3>🎯 Insights Territoriales para Política Pública</h3>
                 <ul>
-                    <li><span class="highlight">Concentración crítica:</span> Bogotá D.C., Valle del Cauca y Antioquia concentran el 54.4% de toda la victimización nacional</li>
-                    <li><span class="highlight">Bogotá lidera:</span> 560.017 víctimas mujeres (27.5% del total nacional), requiere intervención urgente</li>
-                    <li><span class="highlight">Top 5 victimización femenina:</span> Bogotá, Valle, Antioquia, Cundinamarca y Santander = 64.9% nacional</li>
-                    <li><span class="highlight">Mayor brecha contra mujeres:</span> Valle del Cauca (149 hombres por cada 100 mujeres), La Guajira (148:100)</li>
-                    <li><span class="highlight">Departamentos pro-mujeres:</span> San Andrés (55.1% mujeres), Boyacá (54.7%), Santander (52.1%)</li>
-                    <li><span class="highlight">Estrategia diferenciada:</span> Los 10 principales departamentos requieren políticas específicas por concentrar el 81.2% de casos</li>
+                    <li><span class="highlight">Concentración crítica:</span> Bogotá D.C., Valle del Cauca y Antioquia concentran el 54.4% de toda la victimización nacional.</li>
+                    <li><span class="highlight">Bogotá lidera:</span> 560.017 víctimas mujeres (27.5% del total nacional), requiere intervención urgente.</li>
+                    <li><span class="highlight">Top 5 victimización femenina:</span> Bogotá, Valle, Antioquia, Cundinamarca y Santander = 64.9% nacional.</li>
+                    <li><span class="highlight">Mayor brecha contra mujeres:</span> Valle del Cauca (149 hombres por cada 100 mujeres), La Guajira (148:100).</li>
+                    <li><span class="highlight">Departamentos pro-mujeres:</span> San Andrés (55.1% mujeres), Boyacá (54.7%), Santander (52.1%).</li>
+                    <li><span class="highlight">Estrategia diferenciada:</span> Los 10 principales departamentos requieren políticas específicas por concentrar el 81.2% de casos.</li>
                 </ul>
             </div>
         </div>
 
-        <!-- ========== SECCIÓN DELITOS ========== -->
         <div id="delitos" class="section">
             <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
             
@@ -673,7 +669,6 @@
                 <p class="subtitle">Análisis detallado por tipo de delito 2020-2025</p>
             </header>
 
-            <!-- Filtro por Tipo de Delito -->
             <div class="filter-container">
                 <label for="delitoSelect" style="color: #2d5016; font-weight: bold; margin-right: 15px;">Seleccionar Tipo de Delito:</label>
                 <select id="delitoSelect" class="filter-select" onchange="showDelitoData()">
@@ -692,7 +687,6 @@
                 </select>
             </div>
 
-            <!-- Resultados por Delito -->
             <div id="delitoResults" class="delito-results">
                 <div class="content-grid">
                     <div class="metric-card female">
@@ -713,25 +707,23 @@
                     </div>
                 </div>
 
-                <!-- Gráfico de Evolución del Delito -->
-                <div class="chart-container evolution-chart">
+                <div class="chart-container">
                     <h3 style="color: #2d5016; margin-bottom: 20px; text-align: center;">Evolución Temporal del Delito Seleccionado</h3>
-                    <canvas id="delitoChart" width="400" height="150"></canvas>
+                    <canvas id="delitoChart" class="chart-canvas"></canvas>
                 </div>
             </div>
 
-            <!-- Insights por Delitos -->
             <div class="insights">
                 <h3>🎯 Insights Críticos por Tipo de Delito</h3>
                 <ul>
-                    <li><span class="highlight">Violencia de género extrema:</span> En violencia intrafamiliar, mujeres representan el 78.7% (595.999 vs 161.333 hombres) - ratio 3.7:1</li>
-                    <li><span class="highlight">Revolución digital:</span> Delitos informáticos: mujeres superan a hombres 55.5% vs 44.5% (191.826 vs 153.761)</li>
-                    <li><span class="highlight">Hurto masivo:</span> 2.8M de víctimas totales, mujeres 39% (1.04M), hombres 61% (1.63M)</li>
-                    <li><span class="highlight">Crecimiento alarmante:</span> Delitos informáticos mujeres +397% (2020-2024), hombres +384%</li>
-                    <li><span class="highlight">Violencia intrafamiliar creciente:</span> Mujeres +59% (85.390 a 135.551), hombres +65% (23.093 a 38.153)</li>
-                    <li><span class="highlight">Brecha extrema en homicidios:</span> Por cada 100 mujeres hay 340 hombres en homicidio culposo</li>
-                    <li><span class="highlight">Concentración femenina:</span> 80.3% de victimización femenina se concentra en violencia intrafamiliar (29.2%) y hurto (51.1%)</li>
-                    <li><span class="highlight">Emergencia química:</span> Lesiones por agentes químicos: mujeres 67.4% y crecimiento del 281%</li>
+                    <li><span class="highlight">Violencia de género extrema:</span> En violencia intrafamiliar, mujeres representan el 78.7% (595.999 vs 161.333 hombres) - ratio 3.7:1.</li>
+                    <li><span class="highlight">Revolución digital:</span> Delitos informáticos: mujeres superan a hombres 55.5% vs 44.5% (191.826 vs 153.761).</li>
+                    <li><span class="highlight">Hurto masivo:</span> 2.8M de víctimas totales, mujeres 39% (1.04M), hombres 61% (1.63M).</li>
+                    <li><span class="highlight">Crecimiento alarmante:</span> Delitos informáticos mujeres +397% (2020-2024), hombres +384%.</li>
+                    <li><span class="highlight">Violencia intrafamiliar creciente:</span> Mujeres +59% (85.390 a 135.551), hombres +65% (23.093 a 38.153).</li>
+                    <li><span class="highlight">Brecha extrema en homicidios:</span> Por cada 100 mujeres hay 340 hombres en homicidio culposo.</li>
+                    <li><span class="highlight">Concentración femenina:</span> 80.3% de victimización femenina se concentra en violencia intrafamiliar (29.2%) y hurto (51.1%).</li>
+                    <li><span class="highlight">Emergencia química:</span> Lesiones por agentes químicos: mujeres 67.4% y crecimiento del 281%.</li>
                 </ul>
             </div>
         </div>
@@ -745,41 +737,45 @@
             male: [204112, 388776, 592712, 475713, 430296, 209007]
         };
 
-        const departmentData = {
-            bogota: { female: 560017, male: 586345, sinDato: 69055 },
-            valle: { female: 297927, male: 443836, sinDato: 47158 },
-            antioquia: { female: 253464, male: 277440, sinDato: 35793 },
-            cundinamarca: { female: 129815, male: 121438, sinDato: 18775 },
-            atlantico: { female: 80422, male: 96343, sinDato: 21910 },
-            santander: { female: 82344, male: 75592, sinDato: 13167 },
-            cauca: { female: 52738, male: 69619, sinDato: 10228 },
-            tolima: { female: 53345, male: 55375, sinDato: 12323 },
-            huila: { female: 50654, male: 60406, sinDato: 10096 },
-            bolivar: { female: 54102, male: 59325, sinDato: 9162 },
-            norte_santander: { female: 50378, male: 60188, sinDato: 5723 },
-            narino: { female: 46941, male: 47492, sinDato: 5870 },
-            meta: { female: 45714, male: 49404, sinDato: 4366 },
-            boyaca: { female: 41378, male: 34219, sinDato: 5302 },
-            risaralda: { female: 31889, male: 34369, sinDato: 5014 },
-            cesar: { female: 28801, male: 34283, sinDato: 6007 },
-            magdalena: { female: 30908, male: 33823, sinDato: 4687 },
-            cordoba: { female: 23503, male: 25156, sinDato: 3592 },
-            caldas: { female: 20140, male: 20667, sinDato: 2513 },
-            quindio: { female: 17817, male: 21094, sinDato: 2281 },
-            casanare: { female: 16702, male: 16822, sinDato: 2070 },
-            sucre: { female: 14522, male: 14625, sinDato: 1291 },
-            guajira: { female: 11056, male: 16384, sinDato: 1966 },
-            caqueta: { female: 11691, male: 11984, sinDato: 1253 },
-            choco: { female: 8561, male: 10866, sinDato: 1546 },
-            arauca: { female: 6663, male: 8894, sinDato: 967 },
-            putumayo: { female: 6096, male: 5742, sinDato: 950 },
-            guaviare: { female: 3057, male: 2962, sinDato: 180 },
-            san_andres: { female: 2698, male: 2194, sinDato: 232 },
-            amazonas: { female: 1004, male: 1116, sinDato: 114 },
-            vichada: { female: 989, male: 921, sinDato: 133 },
-            guainia: { female: 909, male: 771, sinDato: 77 },
-            vaupes: { female: 628, male: 392, sinDato: 53 }
+        // Datos anuales por departamento (extraídos de la tabla proporcionada)
+        const departmentTimeSeriesData = {
+            amazonas: { female: [142, 182, 216, 190, 198, 76], male: [119, 209, 244, 276, 188, 80], total_female: 1004, total_male: 1116, sinDato: 114 },
+            antioquia: { female: [24867, 39916, 54689, 50157, 61423, 22412], male: [26497, 44778, 59890, 58171, 62843, 25261], total_female: 253464, total_male: 277440, sinDato: 35793 },
+            arauca: { female: [762, 879, 1758, 1405, 1269, 590], male: [898, 1079, 2449, 2004, 1829, 635], total_female: 6663, total_male: 8894, sinDato: 967 },
+            atlantico: { female: [6331, 10192, 21930, 17545, 15952, 8472], male: [7876, 13057, 23399, 23119, 18987, 9905], total_female: 80422, total_male: 96343, sinDato: 21910 },
+            bogota: { female: [57985, 76740, 103628, 121264, 131839, 68561], male: [57421, 88132, 115203, 133214, 127688, 64687], total_female: 560017, total_male: 586345, sinDato: 69055 },
+            bolivar: { female: [5228, 8577, 9688, 11764, 12568, 6277], male: [6112, 10488, 11155, 12929, 12410, 6231], total_female: 54102, total_male: 59325, sinDato: 9162 },
+            boyaca: { female: [4676, 6249, 8037, 9097, 8899, 4420], male: [3685, 5235, 6959, 7993, 7154, 3193], total_female: 41378, total_male: 34219, sinDato: 5302 },
+            caldas: { female: [2408, 3373, 4397, 3825, 4380, 1757], male: [2404, 3942, 4564, 3715, 4274, 1768], total_female: 20140, total_male: 20667, sinDato: 2513 },
+            caqueta: { female: [1339, 1804, 2475, 2693, 2413, 967], male: [1168, 1697, 2567, 2842, 2606, 1104], total_female: 11691, total_male: 11984, sinDato: 1253 },
+            casanare: { female: [1727, 2453, 3576, 3374, 3821, 1751], male: [1641, 2372, 3947, 3775, 3528, 1559], total_female: 16702, total_male: 16822, sinDato: 2070 },
+            cauca: { female: [4531, 9479, 13639, 11736, 9270, 4083], male: [5147, 12868, 19565, 14385, 12304, 5350], total_female: 52738, total_male: 69619, sinDato: 10228 },
+            cesar: { female: [3056, 4549, 6005, 6166, 6077, 2948], male: [3506, 5573, 6931, 7843, 7073, 3357], total_female: 28801, total_male: 34283, sinDato: 6007 },
+            choco: { female: [888, 1306, 2126, 1779, 1770, 692], male: [1098, 1748, 2971, 2109, 2264, 676], total_female: 8561, total_male: 10866, sinDato: 1546 },
+            cordoba: { female: [2671, 4081, 4216, 4825, 5359, 2351], male: [2596, 4022, 4821, 5535, 5872, 2310], total_female: 23503, total_male: 25156, sinDato: 3592 },
+            cundinamarca: { female: [13418, 19317, 32083, 27603, 25756, 11638], male: [11838, 18904, 28965, 28079, 23518, 10134], total_female: 129815, total_male: 121438, sinDato: 18775 },
+            guainia: { female: [102, 156, 159, 228, 194, 70], male: [69, 138, 176, 156, 171, 61], total_female: 909, total_male: 771, sinDato: 77 },
+            guaviare: { female: [278, 450, 559, 695, 760, 315], male: [271, 355, 565, 672, 796, 303], total_female: 3057, total_male: 2962, sinDato: 180 },
+            huila: { female: [6515, 10815, 8233, 10129, 10405, 4557], male: [6833, 14660, 9071, 12769, 12186, 4887], total_female: 50654, total_male: 60406, sinDato: 10096 },
+            la_guajira: { female: [1377, 1817, 2098, 2548, 2249, 967], male: [1913, 2515, 3269, 3697, 3526, 1464], total_female: 11056, total_male: 16384, sinDato: 1966 },
+            magdalena: { female: [2786, 4606, 6349, 7137, 6574, 3456], male: [2992, 5061, 7155, 8367, 6847, 3401], total_female: 30908, total_male: 33823, sinDato: 4687 },
+            meta: { female: [4675, 7162, 9240, 9807, 10165, 4665], male: [4481, 7052, 9889, 11597, 11323, 5062], total_female: 45714, total_male: 49404, sinDato: 4366 },
+            narino: { female: [4414, 6348, 9050, 10436, 11245, 5448], male: [4682, 6989, 9522, 10397, 10550, 5352], total_female: 46941, total_male: 47492, sinDato: 5870 },
+            norte_santander: { female: [4829, 7371, 7776, 8740, 8575, 13087], male: [5556, 13776, 9106, 9867, 8031, 13852], total_female: 50378, total_male: 60188, sinDato: 5723 },
+            putumayo: { female: [673, 766, 1136, 1319, 1523, 679], male: [593, 750, 1242, 1222, 1372, 563], total_female: 6096, total_male: 5742, sinDato: 950 },
+            quindio: { female: [1916, 3051, 3533, 4030, 3692, 1595], male: [2281, 3848, 4408, 4707, 3907, 1943], total_female: 17817, total_male: 21094, sinDato: 2281 },
+            risaralda: { female: [3770, 5679, 6507, 6571, 6660, 2702], male: [3929, 6825, 6859, 7403, 6535, 2818], total_female: 31889, total_male: 34369, sinDato: 5014 },
+            san_andres: { female: [277, 431, 556, 531, 638, 265], male: [236, 386, 465, 435, 465, 207], total_female: 2698, total_male: 2194, sinDato: 232 },
+            santander: { female: [9877, 14439, 16861, 17480, 16717, 6970], male: [8647, 13390, 16404, 16452, 14461, 6238], total_female: 82344, total_male: 75592, sinDato: 13167 },
+            sucre: { female: [1935, 2577, 2942, 2922, 2835, 1311], male: [1907, 2393, 3409, 3124, 2461, 1331], total_female: 14522, total_male: 14625, sinDato: 1291 },
+            tolima: { female: [6203, 8630, 9777, 10875, 11485, 6375], male: [6198, 8662, 10961, 11679, 11691, 6184], total_female: 53345, total_male: 55375, sinDato: 12323 },
+            valle_del_cauca: { female: [19486, 56716, 106513, 58847, 38500, 17865], male: [21361, 87705, 206347, 66839, 42604, 18980], total_female: 297927, total_male: 443836, sinDato: 47158 },
+            vaupes: { female: [70, 125, 146, 108, 125, 54], male: [33, 63, 97, 75, 85, 39], total_female: 628, total_male: 392, sinDato: 53 },
+            vichada: { female: [134, 116, 135, 251, 259, 94], male: [124, 104, 137, 266, 228, 62], total_female: 989, total_male: 921, sinDato: 133 },
+            // Note: "SIN DATO" entry from the original table doesn't map to a department and might represent aggregated data or unclassified entries.
+            // For a department-specific chart, we omit this 'department' entry.
         };
+
 
         const delitoData = {
             hurto: {
@@ -840,6 +836,7 @@
         };
 
         let evolutionChart = null;
+        let departmentChart = null; 
         let delitoChart = null;
 
         // ========== FUNCIONES DE NAVEGACIÓN ========== //
@@ -858,12 +855,13 @@
             }
 
             // Inicializar gráficos cuando se muestran las secciones
-            if (sectionId === 'temporal') {
-                setTimeout(() => initEvolutionChart(), 100);
+            if (sectionId === 'temporal' && !evolutionChart) {
+                initEvolutionChart();
             }
+            // Los gráficos de departamento y delito se inicializan al seleccionar un filtro
         }
 
-        // ========== GRÁFICO DE EVOLUCIÓN TEMPORAL ========== //
+        // ========== GRÁFICO DE EVOLUCIÓN TEMPORAL (GENERAL) ========== //
         function initEvolutionChart() {
             const ctx = document.getElementById('evolutionChart').getContext('2d');
             
@@ -921,6 +919,15 @@
                                     return context.dataset.label + ': ' + context.parsed.y.toLocaleString('es-CO');
                                 }
                             }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Victimización Anual por Género a Nivel Nacional',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            color: '#2d5016'
                         }
                     },
                     interaction: {
@@ -941,23 +948,105 @@
         function showDepartmentData() {
             const select = document.getElementById('deptSelect');
             const results = document.getElementById('deptResults');
-            const selectedDept = select.value;
+            const selectedDeptKey = select.value;
+            const departmentName = select.options[select.selectedIndex].text; // Obtener el nombre para el título del gráfico
 
-            if (!selectedDept) {
+            if (!selectedDeptKey) {
                 results.classList.remove('show');
+                if (departmentChart) {
+                    departmentChart.destroy();
+                    departmentChart = null; // Reset chart instance
+                }
+                document.getElementById('departmentChartTitle').textContent = 'Evolución Temporal del Departamento'; // Reset title
                 return;
             }
 
-            const data = departmentData[selectedDept];
-            const total = data.female + data.male + data.sinDato;
-            const femalePercent = ((data.female / (data.female + data.male)) * 100).toFixed(1);
+            const data = departmentTimeSeriesData[selectedDeptKey];
+            const total = data.total_female + data.total_male + data.sinDato; // Usar los totales precalculados de la nueva data
+            const femalePercent = ((data.total_female / (data.total_female + data.total_male)) * 100).toFixed(1);
 
-            document.getElementById('deptFemale').textContent = data.female.toLocaleString('es-CO');
-            document.getElementById('deptMale').textContent = data.male.toLocaleString('es-CO');
+            document.getElementById('deptFemale').textContent = data.total_female.toLocaleString('es-CO');
+            document.getElementById('deptMale').textContent = data.total_male.toLocaleString('es-CO');
             document.getElementById('deptTotal').textContent = total.toLocaleString('es-CO');
             document.getElementById('deptPercent').textContent = femalePercent + '%';
 
             results.classList.add('show');
+
+            // Llamar a la función para inicializar el gráfico del departamento con los datos de series de tiempo
+            initDepartmentChart(data, departmentName);
+        }
+
+        // ========== GRÁFICO DE EVOLUCIÓN POR DEPARTAMENTO ========== //
+        function initDepartmentChart(data, departmentName) {
+            const ctx = document.getElementById('departmentChart').getContext('2d');
+            
+            if (departmentChart) {
+                departmentChart.destroy();
+            }
+
+            document.getElementById('departmentChartTitle').textContent = `Evolución Temporal en ${departmentName}`;
+
+            departmentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: evolutionData.years, // Usamos los años generales como etiquetas
+                    datasets: [{
+                        label: '👩 Mujeres',
+                        data: data.female,
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#8e44ad',
+                        pointBorderColor: '#8e44ad',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }, {
+                        label: '👨 Hombres',
+                        data: data.male,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#3498db',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString('es-CO');
+                                }
+                            }
+                        },
+                        title: {
+                            display: false // Ya tenemos el título en el h3 arriba
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
         }
 
         // ========== FILTRO DELITOS ========== //
@@ -965,9 +1054,15 @@
             const select = document.getElementById('delitoSelect');
             const results = document.getElementById('delitoResults');
             const selectedDelito = select.value;
+            const delitoName = select.options[select.selectedIndex].text; // Obtener el nombre para el título del gráfico
 
             if (!selectedDelito) {
                 results.classList.remove('show');
+                if (delitoChart) {
+                    delitoChart.destroy();
+                    delitoChart = null; // Reset chart instance
+                }
+                document.getElementById('delitoChartTitle').textContent = 'Evolución Temporal del Delito Seleccionado'; // Reset title
                 return;
             }
 
@@ -983,16 +1078,18 @@
             results.classList.add('show');
 
             // Crear gráfico de evolución del delito
-            setTimeout(() => initDelitoChart(data), 100);
+            initDelitoChart(data, delitoName);
         }
 
         // ========== GRÁFICO DE EVOLUCIÓN POR DELITO ========== //
-        function initDelitoChart(data) {
+        function initDelitoChart(data, delitoName) {
             const ctx = document.getElementById('delitoChart').getContext('2d');
             
             if (delitoChart) {
                 delitoChart.destroy();
             }
+
+            document.getElementById('delitoChartTitle').textContent = `Evolución Temporal en ${delitoName}`;
 
             delitoChart = new Chart(ctx, {
                 type: 'line',
@@ -1036,6 +1133,9 @@
                                     return context.dataset.label + ': ' + context.parsed.y.toLocaleString('es-CO');
                                 }
                             }
+                        },
+                        title: {
+                            display: false // Ya tenemos el título en el h3 arriba
                         }
                     }
                 }
@@ -1048,8 +1148,8 @@
             const numericElements = document.querySelectorAll('.metric-value, .stat-number');
             numericElements.forEach(element => {
                 const text = element.textContent;
-                if (text && !text.includes('%') && !text.includes('M') && !isNaN(text.replace(/,/g, ''))) {
-                    const number = parseInt(text.replace(/,/g, ''));
+                if (text && !text.includes('%') && !text.includes('M') && !isNaN(text.replace(/\./g, '').replace(/,/g, ''))) {
+                    const number = parseInt(text.replace(/\./g, ''));
                     if (!isNaN(number) && number > 999) {
                         element.textContent = number.toLocaleString('es-CO');
                     }
@@ -1071,6 +1171,11 @@
                     navMenu.classList.add('collapsed');
                 }
             });
+            
+            // Si la sección "temporal" es la primera en mostrarse, inicializar el gráfico
+            if (document.getElementById('temporal').classList.contains('active')) {
+                initEvolutionChart();
+            }
         });
     </script>
 </body>
