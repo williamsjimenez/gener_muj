@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Seguridad - Colombia 2020-2025</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c59 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 3px solid #2d5016;
+        }
+
+        h1 {
+            color: #2d5016;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #4a7c59;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .nav-menu button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px 15px;
+            background: #2d5016;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            min-height: 44px;
+        }
+
+        .nav-menu button:hover {
+            background: #4a7c59;
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                border-radius: 10px;
+            }
+
+            .nav-menu {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                width: auto;
+                padding: 10px;
+            }
+
+            .nav-menu.collapsed .nav-menu-items {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                width: 100%;
+                padding: 12px;
+                background: #2d5016;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+
+            .nav-menu-items {
+                display: block;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .key-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navigation-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metric-card {
+                padding: 15px;
+            }
+
+            .metric-value {
+                font-size: 1.8rem;
+            }
+
+            .filter-select {
+                width: 100%;
+                min-width: auto;
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .chart-container {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .key-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-value {
+                font-size: 1.5rem;
+            }
+
+            .nav-button {
+                font-size: 1rem;
+                padding: 20px;
+            }
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HOME STYLES */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .dimension-card {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c59 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .dimension-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dimension-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .dimension-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .key-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #2d5016;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d5016;
+        }
+
+        .stat-label {
+            color: #4a7c59;
+            font-size: 0.9rem;
+        }
+
+        .navigation-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c59 100%);
+            color: white;
+            padding: 25px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* SECTION CONTENT STYLES */
+        .back-button {
+            background: #4a7c59;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #2d5016;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #2d5016;
+        }
+
+        .metric-card.female {
+            border-left-color: #8e44ad;
+        }
+
+        .metric-card.male {
+            border-left-color: #3498db;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2d5016;
+        }
+
+        .metric-card.female .metric-value {
+            color: #8e44ad;
+        }
+
+        .metric-card.male .metric-value {
+            color: #3498db;
+        }
+
+        .metric-label {
+            color: #4a7c59;
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .filter-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #2d5016;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: #2d5016;
+            min-width: 250px;
+        }
+
+        .insights {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #2d5016;
+        }
+
+        .insights h3 {
+            color: #2d5016;
+            margin-bottom: 15px;
+        }
+
+        .insights ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .insights li {
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .insights li:before {
+            content: "📊 ";
+            margin-right: 8px;
+        }
+
+        .highlight {
+            background: #e8f5e8;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .alert {
+            background: #e8f5e8;
+            color: #2d5016;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #4a7c59;
+            margin: 20px 0;
+        }
+
+        .dept-results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .dept-results.show {
+            display: block;
+        }
+
+        .delito-results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .delito-results.show {
+            display: block;
+        }
+
+        .evolution-chart {
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-menu" id="navMenu">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰ Menú</button>
+        <div class="nav-menu-items">
+            <button onclick="showSection('home')">🏠 Inicio</button>
+            <button onclick="showSection('temporal')">📈 Evolución</button>
+            <button onclick="showSection('territorial')">🗺️ Territorial</button>
+            <button onclick="showSection('delitos')">🔍 Por Delitos</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- ========== SECCIÓN HOME ========== -->
+        <div id="home" class="section active">
+            <header>
+                <h1>Dashboard de Seguridad Colombia</h1>
+                <p class="subtitle">Análisis Integral de Victimización 2020-2025 | Consulta Ejecutiva</p>
+            </header>
+
+            <div class="alert">
+                <strong>📌 Enfoque Presidencial:</strong> Este dashboard presenta datos críticos de victimización para la formulación de políticas públicas de seguridad integral en Colombia.
+            </div>
+
+            <h2 style="text-align: center; color: #2d5016; margin: 30px 0;">Tres Dimensiones Interconectadas de la Seguridad</h2>
+            
+            <div class="dimensions-grid">
+                <div class="dimension-card">
+                    <div class="dimension-icon">🏛️</div>
+                    <div class="dimension-title">Seguridad Ciudadana</div>
+                    <p>Evolución hacia una seguridad basada en confianza y presencia estatal efectiva. Incluye delitos tradicionales como hurto, homicidios y lesiones personales.</p>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">💻</div>
+                    <div class="dimension-title">Seguridad Digital</div>
+                    <p>La autopista digital por donde fluye la economía y la democracia moderna. Comprende delitos informáticos y ciberseguridad.</p>
+                </div>
+                <div class="dimension-card">
+                    <div class="dimension-icon">❤️</div>
+                    <div class="dimension-title">Seguridad Humana</div>
+                    <p>La vida y dignidad de cada colombiano como eje de cualquier política pública. Abarca violencia intrafamiliar, desplazamiento y vulnerabilidades sociales.</p>
+                </div>
+            </div>
+
+            <h3 style="text-align: center; color: #2d5016; margin: 30px 0;">Cifras Clave del Período 2020-2025</h3>
+            <div class="key-stats">
+                <div class="stat-card">
+                    <div class="stat-number">4.6M</div>
+                    <div class="stat-label">Total de víctimas registradas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">47%</div>
+                    <div class="stat-label">Víctimas mujeres</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2022</div>
+                    <div class="stat-label">Año pico de victimización</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">78.7%</div>
+                    <div class="stat-label">Mujeres en violencia intrafamiliar</div>
+                </div>
+            </div>
+
+            <div class="navigation-buttons">
+                <button class="nav-button" onclick="showSection('temporal')">
+                    📈 Evolución Temporal<br>
+                    <small>Tendencias 2020-2025 por género</small>
+                </button>
+                <button class="nav-button" onclick="showSection('territorial')">
+                    🗺️ Análisis Territorial<br>
+                    <small>Victimización por departamento</small>
+                </button>
+                <button class="nav-button" onclick="showSection('delitos')">
+                    🔍 Tipología de Delitos<br>
+                    <small>Análisis por tipo de delito y género</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========== SECCIÓN EVOLUCIÓN TEMPORAL ========== -->
+        <div id="temporal" class="section">
+            <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
+            
+            <header>
+                <h1>📈 Evolución Temporal de la Victimización</h1>
+                <p class="subtitle">Análisis de tendencias por género 2020-2025</p>
+            </header>
+
+            <!-- Cifras Totales -->
+            <div class="content-grid">
+                <div class="metric-card female">
+                    <div class="metric-value">2.037.504</div>
+                    <div class="metric-label">👩 Total Víctimas Mujeres</div>
+                </div>
+                <div class="metric-card male">
+                    <div class="metric-value">2.300.616</div>
+                    <div class="metric-label">👨 Total Víctimas Hombres</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4.642.022</div>
+                    <div class="metric-label">📊 Total General</div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Evolución -->
+            <div class="chart-container">
+                <h3 style="color: #2d5016; margin-bottom: 20px; text-align: center;">Evolución Anual por Género</h3>
+                <canvas id="evolutionChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Insights -->
+            <div class="insights">
+                <h3>🎯 Insights Clave para Política Pública</h3>
+                <ul>
+                    <li><span class="highlight">Crisis 2020-2022:</span> Las mujeres experimentaron un crecimiento alarmante del 131% en victimización (199.346 a 460.033 víctimas)</li>
+                    <li><span class="highlight">Pico histórico:</span> 2022 marcó el punto más alto con 460.033 casos femeninos y 1.14M total</li>
+                    <li><span class="highlight">Tendencia actual:</span> Disminución gradual desde 2023, pero los números siguen siendo altos (400k+ anuales)</li>
+                    <li><span class="highlight">Brecha de género:</span> Por cada 100 mujeres victimizadas hay 113 hombres (53% vs 47%)</li>
+                    <li><span class="highlight">Concentración femenina:</span> Las mujeres representan el 47% del total de víctimas con datos de género</li>
+                    <li><span class="highlight">Recuperación más lenta:</span> Las mujeres muestran una reducción más lenta comparada con la tendencia general</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ========== SECCIÓN TERRITORIAL ========== -->
+        <div id="territorial" class="section">
+            <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
+            
+            <header>
+                <h1>🗺️ Análisis Territorial de la Victimización</h1>
+                <p class="subtitle">Distribución por departamento y género 2020-2025</p>
+            </header>
+
+            <!-- Cifras Totales Nacionales -->
+            <div class="content-grid">
+                <div class="metric-card female">
+                    <div class="metric-value">2.037.504</div>
+                    <div class="metric-label">👩 Total Nacional Mujeres</div>
+                </div>
+                <div class="metric-card male">
+                    <div class="metric-value">2.300.616</div>
+                    <div class="metric-label">👨 Total Nacional Hombres</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">47%</div>
+                    <div class="metric-label">📊 Proporción Mujeres</div>
+                </div>
+            </div>
+
+            <!-- Filtro por Departamento -->
+            <div class="filter-container">
+                <label for="deptSelect" style="color: #2d5016; font-weight: bold; margin-right: 15px;">Seleccionar Departamento:</label>
+                <select id="deptSelect" class="filter-select" onchange="showDepartmentData()">
+                    <option value="">-- Seleccione un departamento --</option>
+                    <option value="bogota">Bogotá D.C.</option>
+                    <option value="valle">Valle del Cauca</option>
+                    <option value="antioquia">Antioquia</option>
+                    <option value="cundinamarca">Cundinamarca</option>
+                    <option value="atlantico">Atlántico</option>
+                    <option value="santander">Santander</option>
+                    <option value="cauca">Cauca</option>
+                    <option value="tolima">Tolima</option>
+                    <option value="huila">Huila</option>
+                    <option value="bolivar">Bolívar</option>
+                    <option value="norte_santander">Norte de Santander</option>
+                    <option value="narino">Nariño</option>
+                    <option value="meta">Meta</option>
+                    <option value="boyaca">Boyacá</option>
+                    <option value="risaralda">Risaralda</option>
+                    <option value="cesar">Cesar</option>
+                    <option value="magdalena">Magdalena</option>
+                    <option value="cordoba">Córdoba</option>
+                    <option value="caldas">Caldas</option>
+                    <option value="quindio">Quindío</option>
+                    <option value="casanare">Casanare</option>
+                    <option value="sucre">Sucre</option>
+                    <option value="guajira">La Guajira</option>
+                    <option value="caqueta">Caquetá</option>
+                    <option value="choco">Chocó</option>
+                    <option value="arauca">Arauca</option>
+                    <option value="putumayo">Putumayo</option>
+                    <option value="guaviare">Guaviare</option>
+                    <option value="san_andres">San Andrés</option>
+                    <option value="amazonas">Amazonas</option>
+                    <option value="vichada">Vichada</option>
+                    <option value="guainia">Guainía</option>
+                    <option value="vaupes">Vaupés</option>
+                </select>
+            </div>
+
+            <!-- Resultados por Departamento -->
+            <div id="deptResults" class="dept-results">
+                <div class="content-grid">
+                    <div class="metric-card female">
+                        <div class="metric-value" id="deptFemale">0</div>
+                        <div class="metric-label">👩 Víctimas Mujeres</div>
+                    </div>
+                    <div class="metric-card male">
+                        <div class="metric-value" id="deptMale">0</div>
+                        <div class="metric-label">👨 Víctimas Hombres</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="deptTotal">0</div>
+                        <div class="metric-label">📊 Total Departamento</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="deptPercent">0%</div>
+                        <div class="metric-label">📈 % Mujeres</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Insights Territoriales -->
+            <div class="insights">
+                <h3>🎯 Insights Territoriales para Política Pública</h3>
+                <ul>
+                    <li><span class="highlight">Concentración crítica:</span> Bogotá D.C., Valle del Cauca y Antioquia concentran el 54.4% de toda la victimización nacional</li>
+                    <li><span class="highlight">Bogotá lidera:</span> 560.017 víctimas mujeres (27.5% del total nacional), requiere intervención urgente</li>
+                    <li><span class="highlight">Top 5 victimización femenina:</span> Bogotá, Valle, Antioquia, Cundinamarca y Santander = 64.9% nacional</li>
+                    <li><span class="highlight">Mayor brecha contra mujeres:</span> Valle del Cauca (149 hombres por cada 100 mujeres), La Guajira (148:100)</li>
+                    <li><span class="highlight">Departamentos pro-mujeres:</span> San Andrés (55.1% mujeres), Boyacá (54.7%), Santander (52.1%)</li>
+                    <li><span class="highlight">Estrategia diferenciada:</span> Los 10 principales departamentos requieren políticas específicas por concentrar el 81.2% de casos</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ========== SECCIÓN DELITOS ========== -->
+        <div id="delitos" class="section">
+            <button class="back-button" onclick="showSection('home')">← Volver al Inicio</button>
+            
+            <header>
+                <h1>🔍 Tipología de Delitos por Género</h1>
+                <p class="subtitle">Análisis detallado por tipo de delito 2020-2025</p>
+            </header>
+
+            <!-- Filtro por Tipo de Delito -->
+            <div class="filter-container">
+                <label for="delitoSelect" style="color: #2d5016; font-weight: bold; margin-right: 15px;">Seleccionar Tipo de Delito:</label>
+                <select id="delitoSelect" class="filter-select" onchange="showDelitoData()">
+                    <option value="">-- Seleccione un tipo de delito --</option>
+                    <option value="hurto">Hurto</option>
+                    <option value="violencia_intrafamiliar">Violencia Intrafamiliar</option>
+                    <option value="delitos_informaticos">Delitos Informáticos</option>
+                    <option value="lesiones_culposas">Lesiones Personales Culposas</option>
+                    <option value="homicidio_culposo">Homicidio Culposo</option>
+                    <option value="desplazamiento">Desplazamiento</option>
+                    <option value="orden_economico">Orden Económico Social</option>
+                    <option value="desaparicion_forzada">Desaparición Forzada</option>
+                    <option value="seguridad_publica">Seguridad Pública</option>
+                    <option value="personas_bienes_dih">Personas y Bienes DIH</option>
+                    <option value="lesiones_agentes_quimicos">Lesiones por Agentes Químicos</option>
+                </select>
+            </div>
+
+            <!-- Resultados por Delito -->
+            <div id="delitoResults" class="delito-results">
+                <div class="content-grid">
+                    <div class="metric-card female">
+                        <div class="metric-value" id="delitoFemale">0</div>
+                        <div class="metric-label">👩 Víctimas Mujeres</div>
+                    </div>
+                    <div class="metric-card male">
+                        <div class="metric-value" id="delitoMale">0</div>
+                        <div class="metric-label">👨 Víctimas Hombres</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="delitoTotal">0</div>
+                        <div class="metric-label">📊 Total Delito</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="delitoPercent">0%</div>
+                        <div class="metric-label">📈 % Mujeres</div>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Evolución del Delito -->
+                <div class="chart-container evolution-chart">
+                    <h3 style="color: #2d5016; margin-bottom: 20px; text-align: center;">Evolución Temporal del Delito Seleccionado</h3>
+                    <canvas id="delitoChart" width="400" height="150"></canvas>
+                </div>
+            </div>
+
+            <!-- Insights por Delitos -->
+            <div class="insights">
+                <h3>🎯 Insights Críticos por Tipo de Delito</h3>
+                <ul>
+                    <li><span class="highlight">Violencia de género extrema:</span> En violencia intrafamiliar, mujeres representan el 78.7% (595.999 vs 161.333 hombres) - ratio 3.7:1</li>
+                    <li><span class="highlight">Revolución digital:</span> Delitos informáticos: mujeres superan a hombres 55.5% vs 44.5% (191.826 vs 153.761)</li>
+                    <li><span class="highlight">Hurto masivo:</span> 2.8M de víctimas totales, mujeres 39% (1.04M), hombres 61% (1.63M)</li>
+                    <li><span class="highlight">Crecimiento alarmante:</span> Delitos informáticos mujeres +397% (2020-2024), hombres +384%</li>
+                    <li><span class="highlight">Violencia intrafamiliar creciente:</span> Mujeres +59% (85.390 a 135.551), hombres +65% (23.093 a 38.153)</li>
+                    <li><span class="highlight">Brecha extrema en homicidios:</span> Por cada 100 mujeres hay 340 hombres en homicidio culposo</li>
+                    <li><span class="highlight">Concentración femenina:</span> 80.3% de victimización femenina se concentra en violencia intrafamiliar (29.2%) y hurto (51.1%)</li>
+                    <li><span class="highlight">Emergencia química:</span> Lesiones por agentes químicos: mujeres 67.4% y crecimiento del 281%</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== DATOS ========== //
+        const evolutionData = {
+            years: ['2020', '2021', '2022', '2023', '2024', '2025'],
+            female: [199346, 320352, 460033, 426077, 424222, 207474],
+            male: [204112, 388776, 592712, 475713, 430296, 209007]
+        };
+
+        const departmentData = {
+            bogota: { female: 560017, male: 586345, sinDato: 69055 },
+            valle: { female: 297927, male: 443836, sinDato: 47158 },
+            antioquia: { female: 253464, male: 277440, sinDato: 35793 },
+            cundinamarca: { female: 129815, male: 121438, sinDato: 18775 },
+            atlantico: { female: 80422, male: 96343, sinDato: 21910 },
+            santander: { female: 82344, male: 75592, sinDato: 13167 },
+            cauca: { female: 52738, male: 69619, sinDato: 10228 },
+            tolima: { female: 53345, male: 55375, sinDato: 12323 },
+            huila: { female: 50654, male: 60406, sinDato: 10096 },
+            bolivar: { female: 54102, male: 59325, sinDato: 9162 },
+            norte_santander: { female: 50378, male: 60188, sinDato: 5723 },
+            narino: { female: 46941, male: 47492, sinDato: 5870 },
+            meta: { female: 45714, male: 49404, sinDato: 4366 },
+            boyaca: { female: 41378, male: 34219, sinDato: 5302 },
+            risaralda: { female: 31889, male: 34369, sinDato: 5014 },
+            cesar: { female: 28801, male: 34283, sinDato: 6007 },
+            magdalena: { female: 30908, male: 33823, sinDato: 4687 },
+            cordoba: { female: 23503, male: 25156, sinDato: 3592 },
+            caldas: { female: 20140, male: 20667, sinDato: 2513 },
+            quindio: { female: 17817, male: 21094, sinDato: 2281 },
+            casanare: { female: 16702, male: 16822, sinDato: 2070 },
+            sucre: { female: 14522, male: 14625, sinDato: 1291 },
+            guajira: { female: 11056, male: 16384, sinDato: 1966 },
+            caqueta: { female: 11691, male: 11984, sinDato: 1253 },
+            choco: { female: 8561, male: 10866, sinDato: 1546 },
+            arauca: { female: 6663, male: 8894, sinDato: 967 },
+            putumayo: { female: 6096, male: 5742, sinDato: 950 },
+            guaviare: { female: 3057, male: 2962, sinDato: 180 },
+            san_andres: { female: 2698, male: 2194, sinDato: 232 },
+            amazonas: { female: 1004, male: 1116, sinDato: 114 },
+            vichada: { female: 989, male: 921, sinDato: 133 },
+            guainia: { female: 909, male: 771, sinDato: 77 },
+            vaupes: { female: 628, male: 392, sinDato: 53 }
+        };
+
+        const delitoData = {
+            hurto: {
+                female: [82337, 169735, 268312, 235116, 191748, 94668],
+                male: [130053, 285896, 459546, 339942, 280074, 135657],
+                total: { female: 1041916, male: 1631168 }
+            },
+            violencia_intrafamiliar: {
+                female: [85390, 98317, 102913, 107343, 135551, 66485],
+                male: [23093, 25381, 27189, 28513, 38153, 19004],
+                total: { female: 595999, male: 161333 }
+            },
+            delitos_informaticos: {
+                female: [10870, 21272, 43238, 39049, 54094, 23303],
+                male: [8903, 17479, 31639, 34158, 43128, 18454],
+                total: { female: 191826, male: 153761 }
+            },
+            lesiones_culposas: {
+                female: [13840, 18989, 22937, 23444, 24132, 11157],
+                male: [26623, 35600, 39313, 38157, 38074, 18418],
+                total: { female: 114499, male: 196185 }
+            },
+            homicidio_culposo: {
+                female: [2289, 2920, 3344, 3230, 3284, 1467],
+                male: [7831, 10303, 11211, 11234, 10894, 4792],
+                total: { female: 16534, male: 56265 }
+            },
+            desplazamiento: {
+                female: [2754, 4873, 8820, 9058, 7845, 5532],
+                male: [3566, 6182, 11494, 11280, 9254, 6236],
+                total: { female: 38882, male: 48012 }
+            },
+            orden_economico: {
+                female: [657, 1183, 6870, 6359, 4875, 1437],
+                male: [771, 1082, 5286, 6419, 4494, 1302],
+                total: { female: 21381, male: 19354 }
+            },
+            desaparicion_forzada: {
+                female: [587, 1295, 1668, 1020, 1279, 1613],
+                male: [1516, 2682, 3169, 2111, 2231, 2106],
+                total: { female: 7462, male: 13815 }
+            },
+            seguridad_publica: {
+                female: [541, 1176, 1109, 1208, 1054, 519],
+                male: [1461, 3228, 2707, 3315, 3185, 1486],
+                total: { female: 5607, male: 15382 }
+            },
+            personas_bienes_dih: {
+                female: [65, 584, 790, 209, 299, 1277],
+                male: [285, 934, 1147, 564, 782, 1545],
+                total: { female: 3224, male: 5257 }
+            },
+            lesiones_agentes_quimicos: {
+                female: [16, 8, 32, 41, 61, 16],
+                male: [10, 9, 11, 20, 27, 7],
+                total: { female: 174, male: 84 }
+            }
+        };
+
+        let evolutionChart = null;
+        let delitoChart = null;
+
+        // ========== FUNCIONES DE NAVEGACIÓN ========== //
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Cerrar menú móvil al navegar
+            const navMenu = document.getElementById('navMenu');
+            if (window.innerWidth <= 768) {
+                navMenu.classList.add('collapsed');
+            }
+
+            // Inicializar gráficos cuando se muestran las secciones
+            if (sectionId === 'temporal') {
+                setTimeout(() => initEvolutionChart(), 100);
+            }
+        }
+
+        // ========== GRÁFICO DE EVOLUCIÓN TEMPORAL ========== //
+        function initEvolutionChart() {
+            const ctx = document.getElementById('evolutionChart').getContext('2d');
+            
+            if (evolutionChart) {
+                evolutionChart.destroy();
+            }
+
+            evolutionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: evolutionData.years,
+                    datasets: [{
+                        label: '👩 Mujeres',
+                        data: evolutionData.female,
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#8e44ad',
+                        pointBorderColor: '#8e44ad',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }, {
+                        label: '👨 Hombres',
+                        data: evolutionData.male,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#3498db',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        }
+
+        // ========== MENÚ MÓVIL ========== //
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('collapsed');
+        }
+
+        // ========== FILTRO DEPARTAMENTOS ========== //
+        function showDepartmentData() {
+            const select = document.getElementById('deptSelect');
+            const results = document.getElementById('deptResults');
+            const selectedDept = select.value;
+
+            if (!selectedDept) {
+                results.classList.remove('show');
+                return;
+            }
+
+            const data = departmentData[selectedDept];
+            const total = data.female + data.male + data.sinDato;
+            const femalePercent = ((data.female / (data.female + data.male)) * 100).toFixed(1);
+
+            document.getElementById('deptFemale').textContent = data.female.toLocaleString('es-CO');
+            document.getElementById('deptMale').textContent = data.male.toLocaleString('es-CO');
+            document.getElementById('deptTotal').textContent = total.toLocaleString('es-CO');
+            document.getElementById('deptPercent').textContent = femalePercent + '%';
+
+            results.classList.add('show');
+        }
+
+        // ========== FILTRO DELITOS ========== //
+        function showDelitoData() {
+            const select = document.getElementById('delitoSelect');
+            const results = document.getElementById('delitoResults');
+            const selectedDelito = select.value;
+
+            if (!selectedDelito) {
+                results.classList.remove('show');
+                return;
+            }
+
+            const data = delitoData[selectedDelito];
+            const total = data.total.female + data.total.male;
+            const femalePercent = ((data.total.female / total) * 100).toFixed(1);
+
+            document.getElementById('delitoFemale').textContent = data.total.female.toLocaleString('es-CO');
+            document.getElementById('delitoMale').textContent = data.total.male.toLocaleString('es-CO');
+            document.getElementById('delitoTotal').textContent = total.toLocaleString('es-CO');
+            document.getElementById('delitoPercent').textContent = femalePercent + '%';
+
+            results.classList.add('show');
+
+            // Crear gráfico de evolución del delito
+            setTimeout(() => initDelitoChart(data), 100);
+        }
+
+        // ========== GRÁFICO DE EVOLUCIÓN POR DELITO ========== //
+        function initDelitoChart(data) {
+            const ctx = document.getElementById('delitoChart').getContext('2d');
+            
+            if (delitoChart) {
+                delitoChart.destroy();
+            }
+
+            delitoChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: evolutionData.years,
+                    datasets: [{
+                        label: '👩 Mujeres',
+                        data: data.female,
+                        borderColor: '#8e44ad',
+                        backgroundColor: 'rgba(142, 68, 173, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: '👨 Hombres',
+                        data: data.male,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toLocaleString('es-CO');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // ========== INICIALIZACIÓN ========== //
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-formatear números
+            const numericElements = document.querySelectorAll('.metric-value, .stat-number');
+            numericElements.forEach(element => {
+                const text = element.textContent;
+                if (text && !text.includes('%') && !text.includes('M') && !isNaN(text.replace(/,/g, ''))) {
+                    const number = parseInt(text.replace(/,/g, ''));
+                    if (!isNaN(number) && number > 999) {
+                        element.textContent = number.toLocaleString('es-CO');
+                    }
+                }
+            });
+
+            // Inicializar menú móvil
+            const navMenu = document.getElementById('navMenu');
+            if (window.innerWidth <= 768) {
+                navMenu.classList.add('collapsed');
+            }
+
+            // Manejar cambios de tamaño de ventana
+            window.addEventListener('resize', function() {
+                const navMenu = document.getElementById('navMenu');
+                if (window.innerWidth > 768) {
+                    navMenu.classList.remove('collapsed');
+                } else {
+                    navMenu.classList.add('collapsed');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
